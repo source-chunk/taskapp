@@ -16,7 +16,8 @@ class TaskList extends React.Component {
 		this.state = {
 			data: null,
 			filterText: '',
-			activeTier: 'all',
+            activeTier: 'all',
+            showDone: true,
 		}
 	}
 
@@ -81,36 +82,45 @@ class TaskList extends React.Component {
 		});
 	}
 
-	toggle = (type) => {
+	toggleTier = (type) => {
 		this.setState({
 			activeTier: type,
 		});
-	}
+    }
+    
+    toggleShowDone = () => {
+        this.setState({
+            showDone: !this.state.showDone,
+        });
+    }
 
 	render() {
-		let { data, filterText, activeTier } = this.state;
+		let { data, filterText, activeTier, showDone } = this.state;
 
 		let splitData = {};
 
-		splitData.easy = data && (activeTier === 'all' || activeTier === 'easy') ? data.filter((d) => d.tier === 'easy' && d.name.toLowerCase().includes(filterText.toLowerCase())) : null;
-		splitData.medium = data && (activeTier === 'all' || activeTier === 'medium') ? data.filter((d) => d.tier === 'medium' && d.name.toLowerCase().includes(filterText.toLowerCase())) : null;
-		splitData.hard = data && (activeTier === 'all' || activeTier === 'hard') ? data.filter((d) => d.tier === 'hard' && d.name.toLowerCase().includes(filterText.toLowerCase())) : null;
+		splitData.easy = data && (activeTier === 'all' || activeTier === 'easy') ? data.filter((task) => task.tier === 'easy' && (!task.isDone || showDone) && task.name.toLowerCase().includes(filterText.toLowerCase())) : null;
+		splitData.medium = data && (activeTier === 'all' || activeTier === 'medium') ? data.filter((task) => task.tier === 'medium' && (!task.isDone || showDone) && task.name.toLowerCase().includes(filterText.toLowerCase())) : null;
+		splitData.hard = data && (activeTier === 'all' || activeTier === 'hard') ? data.filter((task) => task.tier === 'hard' && (!task.isDone || showDone) && task.name.toLowerCase().includes(filterText.toLowerCase())) : null;
 
 		return (
 			<div className="tasklist">
-				<div className='top'>
-					<input className='taskSearch' placeholder='Search' type='text' onChange={this.handleSearch} />
-					<Dropdown className='tier-dropdown' size="sm">
-						<Dropdown.Toggle variant="secondary" id="dropdown-basic" className={'tier-button ' + activeTier}>
-							{TIER_NAMES[activeTier]}
-						</Dropdown.Toggle>
-						<Dropdown.Menu>
-							{Object.keys(TIER_NAMES).map(tierName => {
-								return <Dropdown.Item key={tierName + ' option'} className={'tier ' + tierName + (tierName === activeTier ? ' active' : '')} onClick={() => this.toggle(tierName)}>{TIER_NAMES[tierName]}</Dropdown.Item>
-							})}
-						</Dropdown.Menu>
-					</Dropdown>
-				</div>
+                <div className='top'>
+                    <div className='top-bar'>
+                        <input className='taskSearch' placeholder='Search' type='text' onChange={this.handleSearch} />
+                        <Dropdown className='tier-dropdown' size="sm">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" className={'tier-button ' + activeTier}>
+                                {TIER_NAMES[activeTier]}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                {Object.keys(TIER_NAMES).map(tierName => {
+                                    return <Dropdown.Item key={tierName + ' option'} className={'tier ' + tierName + (tierName === activeTier ? ' active' : '')} onClick={() => this.toggleTier(tierName)}>{TIER_NAMES[tierName]}</Dropdown.Item>
+                                })}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>
+                    <input className='showDoneCheck' type='checkbox' onChange={this.toggleShowDone} checked={showDone} />
+                </div>
 				{(splitData.easy && splitData.easy.length === 0) && (splitData.medium && splitData.medium.length === 0) && (splitData.hard && splitData.hard.length === 0) &&
 					<div>No tasks here!</div>
 				}
@@ -120,7 +130,7 @@ class TaskList extends React.Component {
                             <div className='tier-header'><b>{tierName.charAt(0).toUpperCase() + tierName.slice(1)}</b></div>
                             {splitData[tierName].sort((taskA, taskB) => taskA.isDone - taskB.isDone).map(task => {
                                 return <div className={'taskrow' + (task.isDone ? ' done' : '')} key={task.id}>
-                                    <span className='taskid'>#{task.id}</span><span className='taskname'>{task.name}</span>
+                                    <span className='taskid'>{tierName.slice(0, 2).toUpperCase()}{task.id}</span><span className='taskname'>{task.name}</span>
                                 </div>
                             })}
                         </div>

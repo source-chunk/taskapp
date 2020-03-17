@@ -2,18 +2,38 @@
   cursor: default;
 }
 
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
 .top {
+  border-bottom: solid;
+  height: 60px;
+}
+
+.top-bar {
   height: 35px;
+  margin-left: 10px;
+  margin-top: 5px;
 }
 
 .taskSearch {
+  height: 100%;
+  border: none;
+  background-color: rgba(0,0,0,0);
+  font-size: 18px;
+  padding-left: 10px;
+  padding-right: 10px;
   border: solid 2px;
   border-radius: 5px;
-  height: 105%;
 }
 
 .tier-dropdown {
   display: inline-block;
+  margin-left: 10px;
 }
 
 .tier-button {
@@ -51,12 +71,19 @@
   align-items: center;
 }
 
+.taskrow.done {
+  background-color: rgb(158, 231, 151);
+}
+
 .taskid {
   margin-right: 10px;
   font-weight: bold;
   border-right: solid rgb(175, 175, 175);
   display: inline-block;
-  width: 45px;
+  min-width: 60px;
+  max-width: 60px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-align: center;
 }
 
