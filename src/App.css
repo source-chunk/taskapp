@@ -1,38 +1,71 @@
-.App {
+.btn:disabled {
+  cursor: default;
+}
+
+.top {
+  height: 35px;
+}
+
+.taskSearch {
+  border: solid 2px;
+  border-radius: 5px;
+  height: 105%;
+}
+
+.tier-dropdown {
+  display: inline-block;
+}
+
+.tier-button {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: -5px;
+}
+
+.tier.active {
+  font-weight: bold;
+}
+
+.tier.easy:hover:not(.active) {
+  color: red;
+}
+
+.tier.medium:hover:not(.active) {
+  color: orange;
+}
+
+.tier.hard:hover:not(.active) {
+  color: rgb(223, 194, 35);
+}
+
+.taskrow {
+  border: solid rgb(200, 200, 200);
+  border-radius: 10px;
+  background-color: rgb(215, 215, 215);
+  height: auto;
+  min-height: 50px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.taskid {
+  margin-right: 10px;
+  font-weight: bold;
+  border-right: solid rgb(175, 175, 175);
+  display: inline-block;
+  width: 45px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.taskname {
+  line-height: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.tier-header {
+  font-size: 18px;
+  text-decoration: underline;
+  margin-left: 5px;
 }
