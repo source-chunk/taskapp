@@ -1,6 +1,8 @@
 import React from 'react';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Modal, Button } from 'react-bootstrap';
 import './App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
 const TIER_NAMES = {
 	'all': 'All Tiers',
@@ -18,14 +20,15 @@ class TaskList extends React.Component {
 			filterText: '',
             activeTier: 'all',
             showDone: true,
+            modalOpen: false,
+            taskOpen: null,
 		}
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		fetch('https://jsonplaceholder.typicode.com/todos')
 			.then(res => res.json())
 			.then((data) => {
-				console.log(data[1]);
 				this.setState({
 					data: [
                         {
@@ -94,8 +97,15 @@ class TaskList extends React.Component {
         });
     }
 
+    openTask = (task) => {
+        this.setState({
+            modalOpen: true,
+            taskOpen: task,
+        });
+    }
+
 	render() {
-		let { data, filterText, activeTier, showDone } = this.state;
+		let { data, filterText, activeTier, showDone, modalOpen, taskOpen } = this.state;
 
 		let splitData = {};
 
@@ -118,26 +128,55 @@ class TaskList extends React.Component {
                                 })}
                             </Dropdown.Menu>
                         </Dropdown>
+                        <label className="switch"><input type="checkbox" id="togBtn" onChange={this.toggleShowDone} checked={showDone} /><div className="slider"></div></label>
                     </div>
-                    <input className='showDoneCheck' type='checkbox' onChange={this.toggleShowDone} checked={showDone} />
                 </div>
 				{(splitData.easy && splitData.easy.length === 0) && (splitData.medium && splitData.medium.length === 0) && (splitData.hard && splitData.hard.length === 0) &&
 					<div>No tasks here!</div>
 				}
-				{Object.keys(TIER_NAMES).filter(name => name !== 'all').map(tierName => {
-                    if (splitData[tierName] && splitData[tierName].length > 0) {
-                        return <div key={tierName}>
-                            <div className='tier-header'><b>{tierName.charAt(0).toUpperCase() + tierName.slice(1)}</b></div>
-                            {splitData[tierName].sort((taskA, taskB) => taskA.isDone - taskB.isDone).map(task => {
-                                return <div className={'taskrow' + (task.isDone ? ' done' : '')} key={task.id}>
-                                    <span className='taskid'>{tierName.slice(0, 2).toUpperCase()}{task.id}</span><span className='taskname'>{task.name}</span>
-                                </div>
-                            })}
-                        </div>
-                    } else {
-                        return null;
-                    }
-				})}
+                <div className='tasks'>
+                    {Object.keys(TIER_NAMES).filter(name => name !== 'all').map(tierName => {
+                        if (splitData[tierName] && splitData[tierName].length > 0) {
+                            return <div key={tierName}>
+                                <div className='tier-header'><b>{tierName.charAt(0).toUpperCase() + tierName.slice(1)}</b></div>
+                                {splitData[tierName].sort((taskA, taskB) => taskA.isDone - taskB.isDone).map(task => {
+                                    return <div className={'taskrow' + (task.isDone ? ' done' : '')} key={task.id}>
+                                        <span className='taskid'>
+                                            <span onClick={() => this.openTask(task)}>{tierName.slice(0, 2).toUpperCase()}{task.id}</span>
+                                        </span>
+                                        <span className='taskname'>{task.name}</span>
+                                        <FontAwesomeIcon size='lg' className='info' icon={faInfoCircle} onClick={() => this.openTask(task)} />
+                                    </div>
+                                })}
+                            </div>
+                        } else {
+                            return null;
+                        }
+                    })}
+                </div>
+                {modalOpen &&
+                    <Modal
+                        show={modalOpen}
+                        size="lg"
+                        centered
+                        onHide={() => this.setState({ modalOpen: false })}
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title-vcenter">
+                                {taskOpen.tier.slice(0, 2).toUpperCase()}{taskOpen.id}
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <h4>{taskOpen.name}</h4>
+                            <p>
+                                {taskOpen.desc}
+                            </p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={() => this.setState({ modalOpen: false })}>Close</Button>
+                        </Modal.Footer>
+                    </Modal>
+                }
 			</div>
 		);
 	}

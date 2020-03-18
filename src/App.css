@@ -1,3 +1,7 @@
+body {
+  text-align: center;
+}
+
 .btn:disabled {
   cursor: default;
 }
@@ -7,6 +11,34 @@ select:focus,
 textarea:focus,
 button:focus {
     outline: none;
+}
+
+.modal-header {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.modal-body {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.modal-body > h4 {
+  margin-bottom: 15px;
+}
+
+.modal-body > p {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.modal-footer {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.modal-header > .close {
+  padding: 20px;
 }
 
 .top {
@@ -58,6 +90,10 @@ button:focus {
   color: rgb(223, 194, 35);
 }
 
+.tasks {
+  text-align: left;
+}
+
 .taskrow {
   border: solid rgb(200, 200, 200);
   border-radius: 10px;
@@ -75,6 +111,12 @@ button:focus {
   background-color: rgb(158, 231, 151);
 }
 
+.taskrow > .info {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
 .taskid {
   margin-right: 10px;
   font-weight: bold;
@@ -87,12 +129,68 @@ button:focus {
   text-align: center;
 }
 
+.taskid > span {
+  cursor: pointer;
+}
+
+.taskid > span:hover {
+  text-decoration: underline;
+}
+
 .taskname {
   line-height: 20px;
+  margin-right: 40px;
 }
 
 .tier-header {
   font-size: 18px;
   text-decoration: underline;
   margin-left: 5px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 51px;
+  height: 26px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ca2222;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 2.75px;
+  background-color: white;
+  -webkit-transition: .25s;
+  transition: .25s;
+}
+
+input:checked + .slider {
+  background-color: #2ab934;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(25px);
 }
