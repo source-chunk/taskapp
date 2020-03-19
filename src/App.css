@@ -1,5 +1,8 @@
+/* Global */
+
 body {
   text-align: center;
+  overflow-x: hidden;
 }
 
 .btn:disabled {
@@ -12,6 +15,8 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+
+/* Modal */
 
 .modal-header {
   padding-top: 5px;
@@ -41,9 +46,129 @@ button:focus {
   padding: 20px;
 }
 
+.progress-container {
+  position: relative;
+  width: 80%;
+  margin-top: -35px;
+}
+
+.progress-btn {
+  border: solid;
+  border-radius: 5px;
+  position: absolute;
+  padding: 3px;
+  left: 0px;
+  width: 40%;
+  height: 38px;
+  z-index: 99;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.progress-btn.submitting {
+  cursor: not-allowed;
+}
+
+.progress {
+  position: absolute;
+  left: 0px;
+  width: 0%;
+  height: 38px;
+  background-color: rgb(123, 187, 117);
+}
+
+/* Dashboard */
+
+.active-container {
+  border: solid;
+}
+
+.active-container > .row {
+  margin-left: 0px;
+}
+
+.active-header {
+  height: 50px;
+  font-size: 36px;
+  padding-top: 5px;
+  line-height: 30px;
+  padding-left: 0px;
+  padding-right: 0px;
+  border-bottom: solid;
+  border-right: solid;
+}
+
+.active-name {
+  font-weight: bold;
+}
+
+.active-img {
+  height: 100px;
+  width: 100px;
+  float: left;
+}
+
+.active-desc {
+  padding-top: 10px;
+}
+
+.col1 {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+/* Info */
+
+.progression-info {
+  height: 100vh;
+  background-color: rgb(231, 231, 231);
+  position: fixed;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 18%;
+}
+
+.progression-info > .username {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.progression-info > .activeTier {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.progression-info > .activeProgress {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.progression-info > .passiveProgress.complete {
+  color: rgb(123, 187, 117);
+  font-weight: bold;
+}
+
+.progression-info > .totalProgress {
+  font-size: 18px;
+}
+
+/* Tasks */
+
+.tasklist {
+  margin-left: 15px;
+}
+
 .top {
   border-bottom: solid;
   height: 60px;
+  margin-left: 10px;
 }
 
 .top-bar {
@@ -88,6 +213,39 @@ button:focus {
 
 .tier.hard:hover:not(.active) {
   color: rgb(223, 194, 35);
+}
+
+.showComplete-container {
+  display: inline-block;
+  margin-left: 15px;
+}
+
+.showComplete-container > .label {
+  font-size: 18px;
+  border: solid;
+  padding: 3px;
+  margin-top: 5px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.showComplete-container > .label.off {
+  background-color: rgb(231, 151, 151);
+}
+
+.showComplete-container > .label.on {
+  background-color: rgb(158, 231, 151);
+}
+
+.showComplete-container > .switch {
+  margin-left: 5px;
+  margin-top: 10px;
 }
 
 .tasks {
@@ -148,49 +306,34 @@ button:focus {
   margin-left: 5px;
 }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 51px;
-  height: 26px;
+.info:hover {
+  color: rgb(150, 150, 150);
 }
 
-.switch input {display:none;}
+/* Card */
 
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ca2222;
-  -webkit-transition: .4s;
-  transition: .4s;
+.card {
+  position: fixed;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 3px;
-  bottom: 2.75px;
-  background-color: white;
-  -webkit-transition: .25s;
-  transition: .25s;
+.card-img {
+  height: 80%;
+  width: 80%;
+  margin-left: 10%;
 }
 
-input:checked + .slider {
-  background-color: #2ab934;
+.card-title.main {
+  font-size: 36px;
 }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+.card-title.secondary {
+  font-size: 18px;
 }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(20px);
-  -ms-transform: translateX(20px);
-  transform: translateX(25px);
+.wiki-btn {
+  float: left;
+}
+
+.complete-btn {
+  float: right;
 }

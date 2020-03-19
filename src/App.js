@@ -1,8 +1,9 @@
 import React from 'react';
 import './App.css';
-import { Tab, Row, Col, Nav } from 'react-bootstrap';
-import Dashboard from './Dashboard';
+import { Row, Col, Card, Button } from 'react-bootstrap';
+import ProgressionInfo from './ProgressionInfo';
 import TaskList from './TaskList';
+import TaskModal from './TaskModal';
 
 class App extends React.Component {
 	constructor(props) {
@@ -10,6 +11,8 @@ class App extends React.Component {
 
 		this.state = {
 			userData: null,
+			activeTab: 'tasks',
+			modalOpen: false,
 		}
 	}
 
@@ -20,21 +23,31 @@ class App extends React.Component {
 				this.setState({
 					userData: {
 						activeTask: {
-							id: 17,
-							name: 'Obtain a unique from Ghosts',
-							desc: 'All types of Ghosts and ghost-like creatures drop the uniques. These include the Ghost hunter equipment, the Deployable herb burner, the Ectoplasmator and the Cremation ability.',
-							isDone: false,
-							tier: 'medium',
-						},
+                            id: 14,
+                            name: 'Register a total of 23 unique items in the easy tier of your Treasure Trail collection log',
+                            desc: 'Easy clue scrolls can be obtained from several sources. Pickpocketing H.A.M members, killing Goblins are some of the most common. Refer to your Treasure Trail collection log to see your total.',
+                            isDone: true,
+							tier: 'hard',
+							wikiLink: 'https://www.google.com',
+							img: 'https://runescape.wiki/images/thumb/8/88/Black_platebody_%28h1%29_detail.png/150px-Black_platebody_%28h1%29_detail.png?8ff3b',
+                        },
 						activeTier: 'medium',
 						easyDone: 80,
 						mediumDone: 34,
 						hardDone: 0,
+						passiveDone: 6,
+						totalDone: 120,
+						username: 'Source Task',
 					},
 					constData: {
 						easyTotal: 80,
 						mediumTotal: 105,
 						hardTotal: 156,
+						passiveTotal: 200,
+						totalTotal: 541,
+						easyPassiveReq: 5,
+						mediumPassiveReq: 15,
+						hardPassiveReq: 30,
 					}
 				});
 			})
@@ -42,35 +55,34 @@ class App extends React.Component {
 	}
 
 	render() {
+		const { userData, constData, modalOpen } = this.state;
 		return (
 			<div className="App">
-				<Tab.Container id="left-tabs-example" defaultActiveKey="tasks">
-					<Row>
-						<Col sm={2} xs={2}>
-							<Nav variant="pills" className="flex-column">
-								<Nav.Item>
-									<Nav.Link eventKey="dashboard">Dashboard</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link eventKey="tasks">Tasks</Nav.Link>
-								</Nav.Item>
-							</Nav>
-						</Col>
-						<Col sm={8} xs={8}>
-							<Tab.Content>
-								<Tab.Pane eventKey="dashboard">
-									<Dashboard />
-								</Tab.Pane>
-								<Tab.Pane eventKey="tasks">
-									<TaskList />
-								</Tab.Pane>
-							</Tab.Content>
-						</Col>
-						<Col sm={2} xs={2}>
-							<div>Testing</div>
-						</Col>
-					</Row>
-				</Tab.Container>
+				<Row>
+					<Col xs={2}>
+						<ProgressionInfo userData={userData} constData={constData} />
+					</Col>
+					<Col xs={7}>
+						<TaskList />
+					</Col>
+					{userData && <Col xs={3}>
+						<Card>
+							<Card.Title className='main'>Active Task</Card.Title>
+							<Card.Img src={userData.activeTask.img} />
+							<Card.Body>
+								<Card.Title className='secondary'>{userData.activeTask.name}</Card.Title>
+								<Card.Text>
+									{userData.activeTask.desc}
+								</Card.Text>
+								<a href={userData.activeTask.wikiLink} target='_blank' rel="noopener noreferrer"><Button className='wiki-btn' variant="primary">Wiki</Button></a>
+								<Button className='complete-btn' variant="success" onClick={() => this.setState({ modalOpen: true })}>Complete Task</Button>
+							</Card.Body>
+						</Card>
+					</Col>}
+				</Row>
+				{modalOpen &&
+                    <TaskModal taskOpen={userData.activeTask} handleClose={() => this.setState({ modalOpen: false })} handleComplete={() => console.log('complete')} />
+                }
 			</div>
 		);
 	}
